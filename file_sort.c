@@ -53,10 +53,10 @@ int main(int argc, char *argv[])
       N += 1;
     }
     printf("Total number of lines read from the inputfile: %d\n", N);
-    
+    int uN = N;
     /* Dynamic memory allocation for n*m matrix */
     double *M;
-    int j, k=0, l=0, m=0, n, u;
+    int j, k=1, l=0, m=0, n, u, p;
     double col1, col2 ;
     char c0[1000], c1[1000];
     M = calloc((N+1)*2, sizeof(*M));
@@ -102,30 +102,33 @@ int main(int argc, char *argv[])
         sscanf(ch, "%s %s", c0, c1);
         col1 = atof(c0);
         col2 = atof(c1);
-        M[2*n] = col1;
-        M[1+2*n]= col2;
-        n += 1;
+        M[2*uN] = col1;
+        M[1+2*uN]= col2;
+        uN -= 1;
       } 
-       
-      for(u=0; u<N; u++)
-      { for(j=u+1; j<N; j++)
-        {  if(M[2*u] == M[2*j])
-           { M[2*u] = M[2*j];
-             M[1+2*u] = M[1+2*j];
-             k +=1;
-             break;
-           }
+    double *P;
+    u = 1;
+    P = calloc((N+1)*2, sizeof(*P));
+    P[2*k]= M[2*u];
+    P[1+2*k]= M[1+2*u]; 
+      for(u=2; u<N+1; u++)
+      { for(j=1; j<k+1; j++)
+        {if(P[2*j]== M[2*u])
+           break;
+         if(j==k) {k +=1;
+           P[2*k]= M[2*u];
+           P[1+2*k]= M[1+2*u];}
         }
-       }
-       for(l=0; l<N-k; l++)
-       { fprintf(outptr, " %1.15g  %1.15g \n", M[2*l], M[1+2*l]);
-       }
+      }
+     for(p=k; p>0; p--)
+        {fprintf(outptr, " %1.15g  %1.15g \n", P[2*p], P[1+2*p]);
+        }
           
         
-          
+     free(P);   
     }
-    printf("Total number of common data points: %d\n", k);
-    printf("Total number of lines in the outputfile: %d\n", N-k);
+    printf("Total number of common data points: %d\n", N-k);
+    printf("Total number of lines in the outputfile: %d\n", k);
 
     fclose(inptr);
     fclose(outptr);
