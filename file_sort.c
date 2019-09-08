@@ -90,6 +90,8 @@ int main(int argc, char *argv[])
          }     
         n += 1;      
        }
+       printf("Total number of common data points: %d\n", k-1);
+       printf("Total number of lines in the outputfile: %d\n", N-k+1);
      }
 
 // Keeps the line that occus last
@@ -121,14 +123,14 @@ int main(int argc, char *argv[])
         }
       }
      for(p=k; p>0; p--)
-        {fprintf(outptr, " %1.15g  %1.15g \n", P[2*p], P[1+2*p]);
+        {fprintf(outptr, " %e  %1.12e \n", P[2*p], P[1+2*p]);
         }
           
         
-     free(P);   
+     free(P);
+     printf("Total number of common data points: %d\n", N-k);
+     printf("Total number of lines in the outputfile: %d\n", k);   
     }
-    printf("Total number of common data points: %d\n", N-k);
-    printf("Total number of lines in the outputfile: %d\n", k);
 
     fclose(inptr);
     fclose(outptr);
